@@ -42,7 +42,6 @@ const Footer = () => {
             <h3 className="text-white font-bold uppercase text-sm tracking-widest">Suporte</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/sobre" className="hover:text-white transition-colors">Sobre o Projeto</Link></li>
-              <li><Link href="/contato" className="hover:text-white transition-colors">Anuncie Conosco</Link></li>
               <li><Link href="/privacidade" className="hover:text-white transition-colors">Política de Privacidade</Link></li>
             </ul>
           </div>
