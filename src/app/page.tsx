@@ -1,65 +1,101 @@
+import { ArticleCard } from "@/components/global";
+import { Button } from "@/components/ui/button";
+import { getArticles } from "@/services/articles";
+import Link from "next/link";
 import Image from "next/image";
+import { Badge } from "lucide-react";
+import { AdBanner } from "@/components/global/ad-banner";
 
-export default function Home() {
+export default async function HomePage() {
+  // Buscamos os primeiros 7 artigos para compor a página
+  const { articles } = await getArticles({ page: 1 });
+
+  // Se não houver artigos, mostramos uma mensagem amigável
+  if (!articles || articles.length === 0) {
+    return (
+      <div className="container mx-auto py-20 text-center">
+        <h1 className="text-2xl font-bold">Nenhuma notícia disponível no momento.</h1>
+        <p className="text-muted-foreground">O MorumBIS está em silêncio... volte mais tarde! 🇾🇪</p>
+      </div>
+    );
+  }
+
+  // O primeiro artigo será o nosso destaque (Hero)
+  const latestArticle = articles[0];
+  // Os demais serão listados na seção de recentes
+  const recentArticles = articles.slice(1, 7);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <main className="container mx-auto px-4 py-8 space-y-16">
+
+      {/* SEÇÃO DE DESTAQUE (Hero Section) */}
+      <section className="relative overflow-hidden rounded-[40px] bg-zinc-950 shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-125">
+
+          {/* Imagem: Agora com encaixe perfeito e sem espaços vazios */}
+          <div className="lg:col-span-6 relative w-full h-87.5 lg:h-auto overflow-hidden">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src={latestArticle.coverImage.url}
+              fill
+              className="object-cover object-center transition-transform duration-700 hover:scale-105"
+              alt={latestArticle.title}
+              priority
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {/* Overlay sutil para integração visual */}
+            <div className="absolute inset-0 bg-linear-to-r from-transparent to-zinc-950/20 hidden lg:block" />
+          </div>
+
+          {/* Conteúdo: Alinhamento e Tipografia */}
+          <div className="lg:col-span-6 p-8 lg:p-16 flex flex-col justify-center items-start space-y-8">
+            <div className="flex items-center gap-3">
+              <Badge className="bg-red-600 hover:bg-red-700 text-white border-none px-4 py-1 rounded-full font-bold text-xs">
+                {latestArticle.category.name || "DESTAQUE"}
+              </Badge>
+            </div>
+
+            <h1 className="text-3xl md:text-5xl lg:text-5.5xl font-black text-white leading-[1.1] tracking-tighter italic uppercase">
+              {latestArticle.title}
+            </h1>
+
+            <div className="pt-4 w-full">
+              <Button asChild size="sm" className="bg-white text-black hover:bg-red-600 hover:text-white font-bold rounded-xl px-4 py-2 h-auto transition-all group">
+                <Link href={`/artigos/${latestArticle.slug}`} className="flex items-center gap-2">
+                  LER NOTÍCIA COMPLETA
+                  <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* SEÇÃO DE ARTIGOS RECENTES */}
+      <section className="space-y-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-l-4 border-red-600 pl-4">
+          <div>
+            <h2 className="text-3xl font-black uppercase tracking-tight">Últimas do Tricolor</h2>
+            <p className="text-muted-foreground italic">As notícias mais recentes do São Paulo FC.</p>
+          </div>
+          <Button variant="outline" asChild className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white">
+            <Link href="/artigos">VER TUDO</Link>
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {recentArticles.map((article: any) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+        </div>
+      </section>
+
+      {/* ESPAÇO PARA ADSENSE (Configurado para Google AdSense) */}
+      <div className="w-full py-10">
+        <div className="w-full h-32 bg-zinc-50 border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center text-zinc-400 rounded-2xl">
+          <span className="text-[10px] uppercase tracking-widest mb-2 font-bold">Publicidade</span>
+          {/* Aqui você colaria o componente de Ad do Google futuramente */}
+          <AdBanner dataAdSlot="0987654321" dataAdFormat="rectangle" />
+        </div>
+      </div>
+    </main>
   );
 }
