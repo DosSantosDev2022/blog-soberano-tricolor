@@ -10,13 +10,51 @@ import { defaultRenders } from "@/components/global/richTextRenders";
 import { AdBanner } from "@/components/global/ad-banner";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Metadata } from "next";
 
 // Função para gerar Metadados Dinâmicos (Essencial para SEO)
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  // Aqui você buscaria o artigo no Hygraph pelo slug
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    return {
+      title: "Artigo não encontrado | Soberano Tricolor",
+    };
+  }
+
+  const url = `https://soberanotricolor.com.br/artigos/${slug}`;
+
   return {
-    title: `Notícia SPFC | Título do Artigo`,
-    description: "Descrição curta do artigo para o Google.",
+    title: `${article.title} | Soberano Tricolor`,
+    description: article.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      url: url,
+      siteName: "Soberano Tricolor",
+      images: [
+        {
+          url: article.coverImage.url,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      type: "article",
+      publishedTime: article.publishedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.coverImage.url],
+    },
   };
 }
 
