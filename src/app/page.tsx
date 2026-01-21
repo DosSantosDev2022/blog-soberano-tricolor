@@ -29,11 +29,11 @@ export default async function HomePage() {
     <main className="container mx-auto px-4 py-8 space-y-16">
 
       {/* SEÇÃO DE DESTAQUE (Hero Section) */}
-      <section className="relative overflow-hidden rounded-[40px] bg-zinc-950 shadow-2xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-125">
+      <section className="relative overflow-hidden rounded-[32px] md:rounded-[40px] bg-zinc-950 shadow-2xl border border-zinc-800">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
 
-          {/* Imagem: Agora com encaixe perfeito e sem espaços vazios */}
-          <div className="lg:col-span-6 relative w-full h-87.5 lg:h-auto overflow-hidden">
+          {/* Imagem: Altura reduzida no mobile para evitar o visual "esticado" */}
+          <div className="lg:col-span-6 relative w-full h-64 md:h-80 lg:h-auto overflow-hidden">
             <Image
               src={latestArticle.coverImage.url}
               fill
@@ -41,25 +41,27 @@ export default async function HomePage() {
               alt={latestArticle.title}
               priority
             />
-            {/* Overlay sutil para integração visual */}
-            <div className="absolute inset-0 bg-linear-to-r from-transparent to-zinc-950/20 hidden lg:block" />
+            {/* Overlay para mobile: garante leitura do badge sobre a imagem se necessário */}
+            <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-transparent lg:hidden" />
           </div>
 
-          {/* Conteúdo: Alinhamento e Tipografia */}
-          <div className="lg:col-span-6 p-8 lg:p-16 flex flex-col justify-center items-start space-y-8">
+          {/* Conteúdo: Menos padding no mobile para compactar o visual */}
+          <div className="lg:col-span-6 p-6 md:p-10 lg:p-16 flex flex-col justify-center items-start space-y-4 md:space-y-6 lg:space-y-8">
             <div className="flex items-center gap-3">
-              <Badge className="bg-red-600 hover:bg-red-700 text-white border-none px-4 py-1 rounded-full font-bold text-xs">
+              {/* Badge corrigido: Usando span ou componente Badge do Shadcn (não o ícone da Lucide) */}
+              <span className="bg-red-600 text-white px-3 py-1 rounded-full font-bold text-[10px] md:text-xs uppercase tracking-wider">
                 {latestArticle.category?.name || "DESTAQUE"}
-              </Badge>
+              </span>
             </div>
 
-            <h1 className="text-3xl md:text-5xl lg:text-5.5xl font-black text-white leading-[1.1] tracking-tighter italic uppercase">
+            {/* Título: Tamanho responsivo (text-2xl no mobile) */}
+            <h1 className="text-2xl md:text-4xl lg:text-5.5xl font-black text-white leading-tight tracking-tighter italic uppercase">
               {latestArticle.title}
             </h1>
 
-            <div className="pt-4 w-full">
-              <Button asChild size="sm" className="bg-white text-black hover:bg-red-600 hover:text-white font-bold rounded-xl px-4 py-2 h-auto transition-all group">
-                <Link href={`/artigos/${latestArticle.slug}`} className="flex items-center gap-2">
+            <div className="pt-2 md:pt-4 w-full">
+              <Button asChild size="default" className="w-full md:w-auto bg-white text-black hover:bg-red-600 hover:text-white font-bold rounded-xl px-6 py-5 h-auto transition-all group">
+                <Link href={`/artigos/${latestArticle.slug}`} className="flex items-center justify-center gap-2">
                   LER NOTÍCIA COMPLETA
                   <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
                 </Link>
