@@ -45,7 +45,7 @@ export default async function ArticlesPage({
             <FilterBar />
 
             {/* Espaço para AD Lateral na página de listagem */}
-            <div className="mt-8 hidden lg:block w-full h-64 bg-zinc-50 border border-dashed rounded-xl flex items-center justify-center text-xs text-muted-foreground">
+            <div className="mt-8 hidden lg:block w-full h-64 bg-zinc-50 border border-dashed rounded-xl items-center justify-center text-xs text-muted-foreground">
               <AdBanner dataAdSlot="0987654321" />
             </div>
           </div>
@@ -65,7 +65,7 @@ export default async function ArticlesPage({
               )}
 
               {/* GRID DE ARTIGOS */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
                 {articles.map((article: any) => (
                   <ArticleCard key={article.id} article={article} />
                 ))}
@@ -81,7 +81,6 @@ export default async function ArticlesPage({
           ) : (
             /* ESTADO VAZIO: Quando não encontra nada */
             <div className="flex flex-col items-center justify-center py-20 text-center space-y-4 bg-zinc-50 rounded-3xl border border-dashed">
-              <div className="text-5xl">🏟️</div>
               <h3 className="text-xl font-bold">Nenhuma notícia encontrada</h3>
               <p className="text-muted-foreground max-w-xs">
                 Não encontramos resultados para sua busca. Tente outros termos ou limpe os filtros.
