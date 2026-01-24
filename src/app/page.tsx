@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { getArticles } from "@/services/articles";
 import Link from "next/link";
 import Image from "next/image";
-import { Badge } from "lucide-react";
 import { AdBanner } from "@/components/global/ad-banner";
 
 export default async function HomePage() {
