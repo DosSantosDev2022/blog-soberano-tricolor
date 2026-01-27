@@ -21,6 +21,8 @@ export const metadata: Metadata = {
     icon: "/favicon.ico", // Coloque seu favicon na pasta public
     apple: "/apple-touch-icon.png",
   },
+
+
 };
 
 export default function RootLayout({
@@ -37,6 +39,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <meta name="google-site-verification" content="BQ3BsKxQv9wmjdsELFbZEa887IFYp_9gIOeMQ_mgnZc" />
       </head>
       <body
         className={`${poppins.className} antialiased`}
