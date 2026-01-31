@@ -17,16 +17,16 @@ export default async function ProductsPage({
     <main className="container mx-auto px-4 py-10">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter">
-          Loja do <span className="text-red-600">Torcedor</span>
+          Produtos <span className="text-primary">Recomendados</span>
         </h1>
         <p className="text-muted-foreground mt-4 text-lg">
-          Os melhores produtos do São Paulo FC selecionados para você.
+          Os melhores produtos recomendados para você.
         </p>
       </header>
 
       {/* Banner de anúncio superior */}
       <div className="mb-12">
-        <AdBanner dataAdSlot="SEU_SLOT_LOJA_TOP" />
+        <AdBanner dataAdSlot="0987654321" />
       </div>
 
       {products.length > 0 ? (
@@ -51,7 +51,7 @@ export default async function ProductsPage({
 
       {/* Banner de anúncio inferior */}
       <div className="mt-20">
-        <AdBanner dataAdSlot="SEU_SLOT_LOJA_BOTTOM" />
+        <AdBanner dataAdSlot="0987654321" />
       </div>
     </main>
   );
